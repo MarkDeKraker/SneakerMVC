@@ -28,4 +28,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/sneaker/create', function () {
+    return view('sneaker.create');
+})->middleware(['auth', 'verified'])->name('sneaker.create');
+
 require __DIR__.'/auth.php';
