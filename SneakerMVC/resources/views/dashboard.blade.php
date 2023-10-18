@@ -4,46 +4,16 @@
     <p class="font-medium text-xl">Your sneakers</p>
 <div class="bg-white grid grid-cols-4 gap-2">
 
+@foreach ($sneakers as $sneaker)
 <div class="border-2 max-w-xs rounded-lg p-2">
-    <p>Jordan 1s</p>
-    <p>Size: 44</p>
-    <p>Color: Black</p>
+    <p>Model: {{ $sneaker->sneaker_model }}</p>
+    <p>Size: {{ $sneaker->sneaker_size }}</p>
+    <p>Color: {{ $sneaker->sneaker_color }}</p>
     <div>
-        <button class="bg-black text-white p-2 rounded-lg">Details</button>
+    <a class="bg-black text-white p-2 rounded-lg" href="sneaker/details/{{$sneaker->id}}">Details</a>
     </div>
 </div>
-<div class="border-2 max-w-xs rounded-lg p-2">
-    <p>Jordan 1s</p>
-    <p>Size: 44</p>
-    <p>Color: Black</p>
-    <div>
-        <button class="bg-black text-white p-2 rounded-lg">Details</button>
-    </div>
-</div>
-<div class="border-2 max-w-xs rounded-lg p-2">
-    <p>Jordan 1s</p>
-    <p>Size: 44</p>
-    <p>Color: Black</p>
-    <div>
-        <button class="bg-black text-white p-2 rounded-lg">Details</button>
-    </div>
-</div>
-<div class="border-2 max-w-xs rounded-lg p-2">
-    <p>Jordan 1s</p>
-    <p>Size: 44</p>
-    <p>Color: Black</p>
-    <div>
-        <button class="bg-black text-white p-2 rounded-lg">Details</button>
-    </div>
-</div>
-<div class="border-2 max-w-xs rounded-lg p-2">
-    <p>Jordan 1s</p>
-    <p>Size: 44</p>
-    <p>Color: Black</p>
-    <div>
-        <button class="bg-black text-white p-2 rounded-lg">Details</button>
-    </div>
-</div>
+@endforeach
 </div>
    
 </div>
