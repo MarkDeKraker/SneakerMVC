@@ -2,7 +2,8 @@
 @section('content')
 
 <div class="container mx-auto flex justify-center m-5">
-<form class="w-[500px] shadow-lg p-5" action="{{ route('sneaker.create') }}" method="POST" enctype="multipart/form-data">
+<form class="w-[500px] shadow-lg p-5" action="{{ route('sneaker.store') }}" method="POST" enctype="multipart/form-data">
+    @method('POST')
     @csrf    
 <p class="font-bold text-xl text-center">Add a new sneaker</p>
   <div class="mb-6">
