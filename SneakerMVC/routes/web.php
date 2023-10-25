@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SneakerController;
 use App\Models\Sneaker;
@@ -15,8 +16,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', function () {
+Route::get('/' , [ListingController::class, 'index'], function () {
     
     return view('home');
 });
@@ -30,21 +30,10 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('sneaker', SneakerController::class);
+Route::resource('listing', ListingController::class)->except((['create', 'buy', 'change_active']));
 
-// Route::get('/sneaker/create', function () {
-//     return view('sneaker.create');
-// })->middleware(['auth', 'verified'])->name('sneaker.create');
-// Route::post('/sneaker/create', 'App\Http\Controllers\SneakerController@create')->name('sneaker.create');
-
-// Route::get('/sneaker/edit/{id}', function () {
-//     return view('sneaker.edit');
-// })->middleware(['auth', 'verified'])->name('sneaker.edit');
-
-// Route::get('/sneaker/edit/{id}', 'App\Http\Controllers\SneakerController@edit')->name('sneaker.edit');
-
-
-// Route::put('/sneaker/edit_sneaker', 'App\Http\Controllers\SneakerController@edit_sneaker')->name('sneaker.edit_sneaker');
-
-// Route::get('/sneaker/details/{id}', 'App\Http\Controllers\SneakerController@sneaker')->name('sneaker.sneaker');
+Route::get('listing/create/{id}', [ListingController::class, 'create'])->name('listing.create');
+Route::put('listing/details/{id}', [ListingController::class, 'buy'])->name('listing.buy');
+Route::put('/dashboard/{id}', [ListingController::class, 'change_active'])->name('listing.change_active');
 
 require __DIR__.'/auth.php';

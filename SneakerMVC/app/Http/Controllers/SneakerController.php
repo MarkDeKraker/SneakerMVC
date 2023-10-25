@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Listing;
 use App\Models\Sneaker;
 use Illuminate\Http\Request;
 
@@ -14,8 +15,11 @@ class SneakerController extends Controller
     public function index()
     {
         $sneakers = Sneaker::where('user_id', auth()->user()->id)->get();
-    
-        return view('dashboard', compact('sneakers'));
+        $listings = Listing::where('seller_id', auth()->user()->id, )->where('listing_sold', false)->get();
+        $sales = Listing::where('listing_sold', true)->where('seller_id', auth()->user()->id, )->get();
+        $purchases = Listing::where('buyer_id', auth()->user()->id)->get();
+
+        return view('dashboard', compact('sneakers', 'listings', 'sales', 'purchases'));
     }
 
     /**
@@ -52,7 +56,7 @@ class SneakerController extends Controller
             'sneaker_releasedate' => $validatedData['sneakerreleasedate'],
             'sneaker_stylecode' => $validatedData['sneakerstylecode'],
             'sneaker_paidprice' => $validatedData['sneakerpaidprice'],
-            'sneaker_picture' => $validatedData,
+            'sneaker_picture' => $sneakerimage,
         ]);
 
         return redirect()->route('dashboard');

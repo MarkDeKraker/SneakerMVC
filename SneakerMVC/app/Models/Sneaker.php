@@ -13,4 +13,9 @@ class Sneaker extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function listing()
+    {
+        return $this->hasMany(Listing::class);
+    }
 }
