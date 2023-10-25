@@ -20,8 +20,11 @@
             <a href="/" class="font-semibold text-black">Sneaker MVC</a>
                 <div class="flex space-x-4">
                     @guest
-                        <a href="{{ route('login') }}" class="">Login</a>
-                        <a href="{{ route('register') }}" class="">Register</a>
+                    <form>
+                        <a href="{{ route('login') }}" class="bg-black text-white p-2 rounded-lg">Login</a>
+                        <a href="{{ route('register') }}" class="bg-black text-white p-2  rounded-lg">Register</a>
+                    </form>
+                       
                     @endguest
                     @auth
                     <form class="space-x-2" method="POST" action="{{ route('logout') }}" >
