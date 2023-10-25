@@ -30,9 +30,3 @@ Route::put('listing/details/{id}', [ListingController::class, 'buy'])->name('lis
 Route::put('/dashboard/{id}', [ListingController::class, 'change_active'])->name('listing.change_active');
 
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
