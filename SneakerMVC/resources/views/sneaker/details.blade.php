@@ -30,7 +30,7 @@
 </div>          
 <div class="border-2"></div>
     <div class="p-2 flex justify-center space-x-2">
-        <button class="p-2 bg-black text-white rounded-lg">Create Sale</button>
+        <a class="p-2 bg-black text-white rounded-lg" href="{{ route("listing.create", $sneaker)}}">Create listing</a>
         <a class="bg-black text-white p-2 rounded-lg" href="{{ route("sneaker.edit", $sneaker)}}">Edit</a>
         <form action="{{ route('sneaker.destroy', $sneaker) }}" method="POST" enctype="multipart/form-data">
             @method('DELETE')
