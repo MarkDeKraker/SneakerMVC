@@ -30,7 +30,7 @@
                         <a href="{{ route('sneaker.create') }}" class="bg-black text-white p-2 rounded-lg">
                             Add sneaker
                         </a>
-                        <form method="POST" action="{{ route('logout') }}">
+                        <form class="" method="POST" action="{{ route('logout') }}" >
                             @csrf
                             <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="bg-black text-white p-2 rounded-lg">Logout</a>
                         </form>

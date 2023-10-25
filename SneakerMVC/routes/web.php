@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SneakerController;
+use App\Models\Sneaker;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,26 +17,34 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    
     return view('home');
 });
 
-Route::get('/dashboard', 'App\Http\Controllers\SneakerController@sneakers', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-// Route::get('/dashboard', 'App\Http\Controllers\SneakerController@index')->name('dashboard');
-
+Route::get('/dashboard', [SneakerController::class, 'index'])->name('dashboard');
+    
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/sneaker/create', function () {
-    return view('sneaker.create');
-})->middleware(['auth', 'verified'])->name('sneaker.create');
+Route::resource('sneaker', SneakerController::class);
 
-Route::post('/sneaker/create', 'App\Http\Controllers\SneakerController@create')->name('sneaker.create');
-Route::get('/sneaker/details/{id}', 'App\Http\Controllers\SneakerController@sneaker')->name('sneaker.sneaker');
+// Route::get('/sneaker/create', function () {
+//     return view('sneaker.create');
+// })->middleware(['auth', 'verified'])->name('sneaker.create');
+// Route::post('/sneaker/create', 'App\Http\Controllers\SneakerController@create')->name('sneaker.create');
+
+// Route::get('/sneaker/edit/{id}', function () {
+//     return view('sneaker.edit');
+// })->middleware(['auth', 'verified'])->name('sneaker.edit');
+
+// Route::get('/sneaker/edit/{id}', 'App\Http\Controllers\SneakerController@edit')->name('sneaker.edit');
+
+
+// Route::put('/sneaker/edit_sneaker', 'App\Http\Controllers\SneakerController@edit_sneaker')->name('sneaker.edit_sneaker');
+
+// Route::get('/sneaker/details/{id}', 'App\Http\Controllers\SneakerController@sneaker')->name('sneaker.sneaker');
 
 require __DIR__.'/auth.php';
