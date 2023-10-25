@@ -1,10 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="container flex justify-center">
-    <a href="{{ route('dashboard') }}" class="bg-black text-white p-2 rounded-lg">Back</a>	
-    </div>
-<div class="container mx-auto shadow-lg max-w-sm border-2 rounded-lg">
+<div class="container mx-auto shadow-lg max-w-sm border-2 rounded-lg mt-5">
 <div class="grid grid-cols-2 p-2">
     <div>                    
         <div class="font-medium">Title:</div>      
