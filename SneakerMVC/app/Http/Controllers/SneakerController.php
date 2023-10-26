@@ -68,6 +68,10 @@ class SneakerController extends Controller
     public function show(string $id)
     {
         $sneaker = Sneaker::find($id);
+
+        if (auth()->user()->id != $sneaker->user_id){
+            return redirect()->route('dashboard');
+        }
     
         return view('sneaker.details', compact('sneaker'));
     }
@@ -79,6 +83,10 @@ class SneakerController extends Controller
     {
         $sneaker = Sneaker::find($id);
     
+        if (auth()->user()->id != $sneaker->user_id){
+            return redirect()->route('dashboard');
+        }
+
         return view('sneaker.edit', compact('sneaker'));
     }
 
@@ -88,6 +96,10 @@ class SneakerController extends Controller
     public function update(Request $request, string $id)
     {
         $sneaker = Sneaker::find($id);
+
+        if (auth()->user()->id != $sneaker->user_id){
+            return redirect()->route('dashboard');
+        }
 
         $validatedData = $request->validate([
             'sneakerbrand' => ['required', 'string', 'max:255'],
@@ -122,6 +134,10 @@ class SneakerController extends Controller
     public function destroy(string $id)
     {
         $sneaker = Sneaker::find($id);
+
+        if (auth()->user()->id != $sneaker->user_id){
+            return redirect()->route('dashboard');
+        }
 
         $sneaker->delete();
 

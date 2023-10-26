@@ -31,6 +31,11 @@
                         <a href="{{ route('dashboard') }}" class="bg-black text-white p-2 rounded-lg">
                             Dashboard
                         </a>
+                        @if (Auth::user()->is_admin == true)
+                        <a href="{{ route('admin-dashboard') }}" class="bg-black text-white p-2 rounded-lg">
+                            Admin Dashboard
+                        </a>
+                        @endif
                         <a href="{{ route('sneaker.create') }}" class="bg-black text-white p-2 rounded-lg">
                             Add sneaker
                         </a>

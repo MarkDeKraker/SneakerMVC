@@ -55,6 +55,7 @@
                 <p>{{ $listing->listing_title }}</p>
                 <p>{{ $listing->listing_description }}</p>
                 <p>€{{ $listing->listing_price }}</p>
+                @if ($listing->listing_approved == true)
                 <label class="relative my-auto items-center cursor-pointer">
                     <form action="{{ route('listing.change_active', $listing) }}" method="POST" enctype="multipart/form-data">
                         @method('PUT')
@@ -63,8 +64,12 @@
                         <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:bg-green-400 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-400"></div>
                     </form>
                 </label>
+                @else
+                <p class="text-red-500">Awaiting approval by a admin</p>
+                @endif
             </div>
         </div>
+        @if ($listing->listing_approved == true)
         <div class="my-2">
             <div class="flex space-x-2">
                 <a class="bg-black text-white p-2 rounded-lg" href="{{ route("listing.show", $listing)}}">Show listing</a>
@@ -74,9 +79,9 @@
                     @csrf
                     <button class="bg-black text-white p-2 rounded-lg">Delete</button>
                 </form>
-             
             </div>
         </div>
+        @endif
     </div>
     @endforeach
 @endif
