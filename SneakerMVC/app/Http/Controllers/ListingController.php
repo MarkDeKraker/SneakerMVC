@@ -14,7 +14,7 @@ class ListingController extends Controller
      */
     public function index()
     {
-        $listings = Listing::where('listing_sold', false)->where('listing_active', true)->get();
+        $listings = Listing::where('listing_sold', false)->where('listing_active', true)->where('listing_approved', true)->get();
     
         return view('home', compact('listings'));
     }
@@ -59,7 +59,8 @@ class ListingController extends Controller
                 'listing_originalprice' => $sneaker->sneaker_paidprice,
                 'seller_id' => $user->id,
                 'listing_sold' => false,
-                "listing_active" => true,
+                "listing_active" => false,
+                "listing_approved" => false,
             ]);
         } else {
             // Handel het geval af waarin de opgegeven sneaker niet bestaat
@@ -85,6 +86,10 @@ class ListingController extends Controller
     public function edit(string $id)
     {
         $listing = Listing::find($id);
+
+        if (auth()->user()->id != $listing->seller_id){
+            return redirect()->route('dashboard');
+        }
     
         return view('listing.edit', compact('listing'));
     }
@@ -95,6 +100,10 @@ class ListingController extends Controller
     public function update(Request $request, string $id)
     {
         $listing = Listing::find($id);
+
+        if (auth()->user()->id != $listing->seller_id){
+            return redirect()->route('dashboard');
+        }
 
         $validatedData = $request->validate([
             'listingtitle' => ['required', 'string', 'max:255'],

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->integer('buyer_id')->nullable();
             $table->integer("seller_id");
             $table->boolean("listing_active")->default(true);
-
+            $table->boolean("listing_approved")->default(false);
         });
     }
 
