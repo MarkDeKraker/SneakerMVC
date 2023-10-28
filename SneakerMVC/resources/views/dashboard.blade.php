@@ -25,7 +25,9 @@
             </div>
         </div>
         <div class="my-2">
-            <a class="bg-black text-white p-2 rounded-lg" href="{{ route("listing.create", $sneaker)}}">Create listing</a>
+            @if (Auth::user()->is_verified == true)
+                <a class="bg-black text-white p-2 rounded-lg" href="{{ route("listing.create", $sneaker)}}">Create listing</a>
+            @endif
             <a class="bg-black text-white p-2 rounded-lg" href="{{ route("sneaker.show", $sneaker)}}">Details</a>
         </div>
     </div>
@@ -38,7 +40,9 @@
     <p class="font-medium text-xl">Listings</p>
 <div class="bg-white grid grid-cols-4 gap-2">
 
-@if (count($listings) == 0)
+@if (Auth::user()->is_verified == false)
+    <p class="text-red-500">Add 5 sneakers to your account sneakers before you can create listings.</p>
+@elseif (count($listings) == 0)
     <p class="">You have no listings yet</p>
 @else
     @foreach ($listings as $listing)
