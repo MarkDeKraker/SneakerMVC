@@ -24,6 +24,10 @@ class ListingController extends Controller
      */
     public function create($id)
     {
+        if (auth()->user()->is_verified == false){
+            return redirect()->route('dashboard');
+        }
+
         $sneaker = Sneaker::find($id);
     
         return view('listing.create', compact('sneaker'));

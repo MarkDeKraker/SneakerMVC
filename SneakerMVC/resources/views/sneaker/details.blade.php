@@ -1,10 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="container flex justify-center">
-    <a href="{{ route('dashboard') }}" class="bg-black text-white p-2 rounded-lg">Back</a>	
-    </div>
-<div class="container mx-auto shadow-lg max-w-sm border-2 rounded-lg"> 
+<div class="container mx-auto shadow-lg max-w-sm border-2 rounded-lg mt-5"> 
 <img src="data:image/jpeg;base64,{{ $sneaker->sneaker_picture }}" alt="sneaker" class="w-full h-64 object-cover rounded-t-lg">
 <div class="border-2"></div>
 
@@ -30,7 +27,9 @@
 </div>          
 <div class="border-2"></div>
     <div class="p-2 flex justify-center space-x-2">
-        <a class="p-2 bg-black text-white rounded-lg" href="{{ route("listing.create", $sneaker)}}">Create listing</a>
+        @if (Auth::user()->is_verified == false)
+            <a class="p-2 bg-black text-white rounded-lg" href="{{ route("listing.create", $sneaker)}}">Create listing</a>
+        @endif
         <a class="bg-black text-white p-2 rounded-lg" href="{{ route("sneaker.edit", $sneaker)}}">Edit</a>
         <form action="{{ route('sneaker.destroy', $sneaker) }}" method="POST" enctype="multipart/form-data">
             @method('DELETE')

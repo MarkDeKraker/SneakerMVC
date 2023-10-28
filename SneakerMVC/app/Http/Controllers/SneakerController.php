@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Listing;
 use App\Models\Sneaker;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SneakerController extends Controller
 {
@@ -58,6 +60,15 @@ class SneakerController extends Controller
             'sneaker_paidprice' => $validatedData['sneakerpaidprice'],
             'sneaker_picture' => $sneakerimage,
         ]);
+
+        // Verify user if 5 sneakers are added to their account, this enabled creating listings.
+        $sneakerCount = Sneaker::where('user_id', auth()->user()->id)->count();
+
+        if (auth()->user()->is_verified === false && $sneakerCount === 5) {
+            $user = User::find(auth()->user()->id);
+            $user->is_verified = true;
+            $user->save();
+        }
 
         return redirect()->route('dashboard');
     }
