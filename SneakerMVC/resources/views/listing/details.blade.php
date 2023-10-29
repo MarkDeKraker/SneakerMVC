@@ -6,12 +6,14 @@
     <div>                    
         <div class="font-medium">Title:</div>      
         <div class="font-medium">Description:</div>
-        <div class="font-medium">Price:</div>                              
+        <div class="font-medium">Price:</div>
+        <div class="font-medium">Condition:</div>                                       
     </div>
     <div >
         <p class="">{{ $listing->listing_title }}</p>
         <p class="">{{ $listing->listing_description }}</p>
-        <p class="">{{ $listing->listing_price }}</p>             
+        <p class="">{{ $listing->listing_price }}</p>
+        <p>{{ $listing->listing_condition == "unworn" ? "Unworn" : "Worn" }}</p>        
     </div>
 </div>          
 <div class="border-2"></div>
