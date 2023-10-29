@@ -14,6 +14,7 @@ class ListingController extends Controller
      */
     public function index()
     {
+        // Get all listings from the database that are not sold, that are active and approved by an admin
         $listings = Listing::where('listing_sold', false)->where('listing_active', true)->where('listing_approved', true)->get();
     
         return view('home', compact('listings'));
@@ -21,9 +22,11 @@ class ListingController extends Controller
 
     public function search(Request $request)
     {
+        // Inputs from the search form
         $query = $request->input('query');
         $condition = $request->input('condition');
 
+        // Filter all listing by the query
         $listings = Listing::where('listing_sold', false)
         ->where('listing_active', true)
         ->where('listing_approved', true)
@@ -32,10 +35,12 @@ class ListingController extends Controller
                 ->orWhereRaw('LOWER(listing_description) ILIKE  ?', ["%$query%"]);
         });
 
+        // Filter all listing by the condition if it is not all
         if ($condition !== 'all' && $condition !== null) {
             $listings->where('listing_condition', $condition);
         }
 
+        // Get all listings
         $listings = $listings->get();
 
         return view('home', compact('listings', 'query', 'condition'));
@@ -47,6 +52,7 @@ class ListingController extends Controller
      */
     public function create($id)
     {
+        // Check if user is verified
         if (auth()->user()->is_verified == false){
             return redirect()->route('dashboard');
         }
@@ -61,6 +67,7 @@ class ListingController extends Controller
      */
     public function store(Request $request)
     {        
+        // Validate data
         $validatedData = $request->validate([
             'listingtitle' => ['required', 'string', 'max:255'],
             'listingdescription' => ['required', 'string', 'max:255'],
@@ -74,6 +81,7 @@ class ListingController extends Controller
 
         $sneaker = $user->sneakers->find($sneakerid);
 
+        // Add sneaker
         $sneaker->listing()->create([
             'listing_title' => $validatedData['listingtitle'],
             'listing_description' => $validatedData['listingdescription'],
@@ -86,7 +94,6 @@ class ListingController extends Controller
             "listing_condition" => $validatedData["listingcondition"]
         ]);
 
-
         return redirect()->route('dashboard');
     }
 
@@ -96,6 +103,11 @@ class ListingController extends Controller
     public function show(string $id)
     {
         $listing = Listing::find($id);
+
+        // Check if listing is approved by an admin and is active
+        if ($listing-> listing_approved == false || $listing->listing_active == false){
+            return redirect()->route('dashboard');
+        }
     
         return view('listing.details', compact('listing'));
     }
@@ -107,7 +119,12 @@ class ListingController extends Controller
     {
         $listing = Listing::find($id);
 
+        // Check if user is the owner of the listing
         if (auth()->user()->id != $listing->seller_id){
+            return redirect()->route('dashboard');
+        }
+
+        if ($listing-> listing_approved == false || $listing->listing_active == false){
             return redirect()->route('dashboard');
         }
     
@@ -121,10 +138,12 @@ class ListingController extends Controller
     {
         $listing = Listing::find($id);
 
+        // Check if user is the owner of the listing
         if (auth()->user()->id != $listing->seller_id){
             return redirect()->route('dashboard');
         }
 
+        // Validate data
         $validatedData = $request->validate([
             'listingtitle' => ['required', 'string', 'max:255'],
             'listingdescription' => ['required', 'string', 'max:255'],
@@ -154,11 +173,15 @@ class ListingController extends Controller
         return redirect('/dashboard');
     }
 
+    /**
+     * Buy the specified listing by a other user
+     */
     public function buy(string $id)
     {
         $listing = Listing::find($id);
         $userid = auth()->user()->id;
 
+        // Makes the listing sold and adds the buyer id
         $listing->listing_sold = true;
         $listing->buyer_id = $userid;
 
@@ -167,10 +190,14 @@ class ListingController extends Controller
         return redirect('/dashboard');
     }
 
+    /**
+     * Change the status of the listing to active or inactive
+     */
     public function change_active(string $id)
     {
         $listing = Listing::find($id);
 
+        // Sets the status of the listing to active or inactive
         if ($listing->listing_active == true) {
             $listing->listing_active = false;
         } else {

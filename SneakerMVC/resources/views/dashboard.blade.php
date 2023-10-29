@@ -41,7 +41,7 @@
 <div class="bg-white grid grid-cols-4 gap-2">
 
 @if (Auth::user()->is_verified == false)
-    <p class="text-red-500">Add 5 sneakers to your account sneakers before you can create listings.</p>
+    <p class="text-red-500">Add 3 sneakers to your account sneakers before you can create listings.</p>
 @elseif (count($listings) == 0)
     <p class="">You have no listings yet</p>
 @else
@@ -64,7 +64,7 @@
                 @if ($listing->listing_approved == true)
                 <label class="relative my-auto items-center cursor-pointer">
                     <form action="{{ route('listing.change_active', $listing) }}" method="POST" enctype="multipart/form-data">
-                        @method('PUT')
+                        @method('POST')
                         @csrf
                         <input {{ $listing->listing_active ? 'checked' : '' }} onchange="this.form.submit()" type="checkbox" class="sr-only peer">
                         <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:bg-green-400 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-400"></div>
@@ -107,17 +107,16 @@
             <div class="col-span-2">
                 <p class="font-medium">Title: </p>
                 <p class="font-medium">Description: </p>
+                <p class="font-medium">Condition: </p>
                 <p class="font-medium">Sold for: </p>
             </div>
             <div class="col-span-2">
                 <p>{{ $sale->listing_title }}</p>
                 <p>{{ $sale->listing_description }}</p>
-                <p>€{{ $sale->listing_price }} <span class="text-green-400">+{{ number_format(($sale->listing_price - $sale->listing_originalprice) / $sale->listing_originalprice * 100, 2) }}%</span></p>
+                <p>{{ $sale->listing_condition == "unworn" ? "Unworn" : "Worn" }}</p>
+                <p>€{{ $sale->listing_price }} <span class="text-green-400">+€{{ number_format(($sale->listing_price - $sale->listing_originalprice)) }}</span></p>
             </div>
         </div>
-        {{-- <div class="my-2">
-            <a class="bg-black text-white p-2 rounded-lg" href="{{ route("sneaker.show", $sale)}}">Details</a>
-        </div> --}}
     </div>
     @endforeach
 @endif
@@ -137,11 +136,13 @@
             <div class="col-span-2">
                 <p class="font-medium">Title: </p>
                 <p class="font-medium">Description: </p>
+                <p class="font-medium">Condition: </p>
                 <p class="font-medium">Bought for: </p>
             </div>
             <div class="col-span-2">
                 <p>{{ $purchase->listing_title }}</p>
                 <p>{{ $purchase->listing_description }}</p>
+                <p>{{ $purchase->listing_condition == "unworn" ? "Unworn" : "Worn" }}</p>
                 <p>€{{ $purchase->listing_price }}</p>
             </div>
         </div>

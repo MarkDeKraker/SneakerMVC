@@ -7,7 +7,6 @@ use App\Models\Listing;
 use App\Models\Sneaker;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class SneakerController extends Controller
 {
@@ -16,8 +15,9 @@ class SneakerController extends Controller
      */
     public function index()
     {
+        // Get all sneakers and listings from the database
         $sneakers = Sneaker::where('user_id', auth()->user()->id)->get();
-        $listings = Listing::where('seller_id', auth()->user()->id, )->where('listing_sold', false)->get();
+        $listings = Listing::where('seller_id', auth()->user()->id, )->where('listing_sold', false)->orderBy('created_at')->get();
         $sales = Listing::where('listing_sold', true)->where('seller_id', auth()->user()->id, )->get();
         $purchases = Listing::where('buyer_id', auth()->user()->id)->get();
 
@@ -37,6 +37,7 @@ class SneakerController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate data
         $validatedData = $request->validate([
             'sneakerbrand' => ['required', 'string', 'max:255'],
             'sneakermodel' => ['required', 'string', 'max:255'],
@@ -48,8 +49,10 @@ class SneakerController extends Controller
             'sneakerpicture' => ['required', 'file', 'max:255'],   
         ]);
 
+        // Convert image to base64
         $sneakerimage = base64_encode(file_get_contents($request->file('sneakerpicture')->getRealPath()));
 
+        // Add image to user's sneakers
         auth()->user()->sneakers()->create([
             'sneaker_brand' => $validatedData['sneakerbrand'],
             'sneaker_model' => $validatedData['sneakermodel'],
@@ -61,10 +64,10 @@ class SneakerController extends Controller
             'sneaker_picture' => $sneakerimage,
         ]);
 
-        // Verify user if 5 sneakers are added to their account, this enabled creating listings.
+        // Verify user if 3 sneakers are added to their account, this enabled creating listings.
         $sneakerCount = Sneaker::where('user_id', auth()->user()->id)->count();
 
-        if (auth()->user()->is_verified === false && $sneakerCount === 5) {
+        if (auth()->user()->is_verified === false && $sneakerCount === 3) {
             $user = User::find(auth()->user()->id);
             $user->is_verified = true;
             $user->save();
@@ -80,6 +83,7 @@ class SneakerController extends Controller
     {
         $sneaker = Sneaker::find($id);
 
+        // Check if the user is the owner of the sneaker
         if (auth()->user()->id != $sneaker->user_id){
             return redirect()->route('dashboard');
         }
@@ -94,6 +98,7 @@ class SneakerController extends Controller
     {
         $sneaker = Sneaker::find($id);
     
+        // Check if the user is the owner of the sneaker
         if (auth()->user()->id != $sneaker->user_id){
             return redirect()->route('dashboard');
         }
@@ -108,10 +113,12 @@ class SneakerController extends Controller
     {
         $sneaker = Sneaker::find($id);
 
+        // Check if the user is the owner of the sneaker
         if (auth()->user()->id != $sneaker->user_id){
             return redirect()->route('dashboard');
         }
 
+        // Validate data
         $validatedData = $request->validate([
             'sneakerbrand' => ['required', 'string', 'max:255'],
             'sneakermodel' => ['required', 'string', 'max:255'],
@@ -123,8 +130,10 @@ class SneakerController extends Controller
             'sneakerpicture' => ['required', 'file', 'max:255'],   
         ]);
 
+        // Convert image to base64
         $sneakerimage = base64_encode(file_get_contents($request->file('sneakerpicture')->getRealPath()));
 
+        // Update sneaker
         $sneaker->sneaker_brand = $validatedData['sneakerbrand'];
         $sneaker->sneaker_model = $validatedData['sneakermodel'];
         $sneaker->sneaker_color = $validatedData['sneakercolor'];
@@ -146,6 +155,7 @@ class SneakerController extends Controller
     {
         $sneaker = Sneaker::find($id);
 
+        // Check if the user is the owner of the sneaker
         if (auth()->user()->id != $sneaker->user_id){
             return redirect()->route('dashboard');
         }
