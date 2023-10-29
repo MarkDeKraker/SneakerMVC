@@ -36,6 +36,9 @@
                             Admin Dashboard
                         </a>
                         @endif
+                        <a href="{{ route('profile.edit') }}" class="bg-black text-white p-2 rounded-lg">
+                            Profile
+                        </a>
                         <a href="{{ route('sneaker.create') }}" class="bg-black text-white p-2 rounded-lg">
                             Add sneaker
                         </a>
