@@ -21,17 +21,16 @@ Route::get('/' , [ListingController::class, 'index'], function () {
     return view('home');
 });
 
-Route::resource('listing', ListingController::class)->except((['create', 'buy', 'change_active']));
+Route::resource('listing', ListingController::class)->except((['create', 'buy', 'change_active', 'search']));
+Route::get('/', [ListingController::class, 'search'])->name('listing.search');
 
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [SneakerController::class, 'index'])->name('dashboard');
-
-    Route::resource('sneaker', SneakerController::class);
-
     Route::get('listing/create/{id}', [ListingController::class, 'create'])->name('listing.create');
     Route::put('listing/details/{id}', [ListingController::class, 'buy'])->name('listing.buy');
     Route::put('/dashboard/{id}', [ListingController::class, 'change_active'])->name('listing.change_active');
+    Route::resource('sneaker', SneakerController::class);
   });
 
 Route::group(['middleware' => ['auth']], function () {

@@ -19,6 +19,29 @@ class ListingController extends Controller
         return view('home', compact('listings'));
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $condition = $request->input('condition');
+
+        $listings = Listing::where('listing_sold', false)
+        ->where('listing_active', true)
+        ->where('listing_approved', true)
+        ->where(function($q) use ($query) {
+            $q->whereRaw('LOWER(listing_title) ILIKE  ?', ["%$query%"])
+                ->orWhereRaw('LOWER(listing_description) ILIKE  ?', ["%$query%"]);
+        });
+
+        if ($condition !== 'all' && $condition !== null) {
+            $listings->where('listing_condition', $condition);
+        }
+
+        $listings = $listings->get();
+
+        return view('home', compact('listings', 'query', 'condition'));
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -41,34 +64,27 @@ class ListingController extends Controller
         $validatedData = $request->validate([
             'listingtitle' => ['required', 'string', 'max:255'],
             'listingdescription' => ['required', 'string', 'max:255'],
-            'listingprice' => ['required', 'integer', 'max:255'],
+            'listingprice' => ['required', 'integer', 'max:10000'],
+            'listingcondition' => ['required', 'string', 'max:255'],
         ]);
 
-        // $sneakerimage = base64_encode(file_get_contents($request->file('sneakerpicture')->getRealPath()));
-
-        // De ingelogde gebruiker ophalen
         $user = auth()->user();
 
         $sneakerid = $request->sneakerid;
 
-        // Vind de juiste sneaker van de gebruiker, bijvoorbeeld op basis van een sneaker-id
         $sneaker = $user->sneakers->find($sneakerid);
 
-        if ($sneaker) {
-            // Een nieuwe listing aanmaken voor de gevonden sneaker
-            $sneaker->listing()->create([
-                'listing_title' => $validatedData['listingtitle'],
-                'listing_description' => $validatedData['listingdescription'],
-                'listing_price' => $validatedData['listingprice'],
-                'listing_originalprice' => $sneaker->sneaker_paidprice,
-                'seller_id' => $user->id,
-                'listing_sold' => false,
-                "listing_active" => false,
-                "listing_approved" => false,
-            ]);
-        } else {
-            // Handel het geval af waarin de opgegeven sneaker niet bestaat
-        }
+        $sneaker->listing()->create([
+            'listing_title' => $validatedData['listingtitle'],
+            'listing_description' => $validatedData['listingdescription'],
+            'listing_price' => $validatedData['listingprice'],
+            'listing_originalprice' => $sneaker->sneaker_paidprice,
+            'seller_id' => $user->id,
+            'listing_sold' => false,
+            "listing_active" => false,
+            "listing_approved" => false,
+            "listing_condition" => $validatedData["listingcondition"]
+        ]);
 
 
         return redirect()->route('dashboard');
@@ -112,12 +128,14 @@ class ListingController extends Controller
         $validatedData = $request->validate([
             'listingtitle' => ['required', 'string', 'max:255'],
             'listingdescription' => ['required', 'string', 'max:255'],
-            'listingprice' => ['required', 'integer', 'max:255'],
+            'listingprice' => ['required', 'integer', 'max:10000'],
+            'listingcondition' => ['required', 'string', 'max:255'],
         ]);
 
         $listing->listing_title = $validatedData['listingtitle'];
         $listing->listing_description = $validatedData['listingdescription'];
         $listing->listing_price = $validatedData['listingprice'];
+        $listing->listing_condition = $validatedData['listingcondition'];
 
         $listing->update();  
 

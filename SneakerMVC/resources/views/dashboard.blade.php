@@ -52,12 +52,14 @@
             <div class="col-span-2">
                 <p class="font-medium">Title: </p>
                 <p class="font-medium">Description: </p>
+                <p class="font-medium">Condition: </p>
                 <p class="font-medium">Listed for: </p>
                 <p class="font-medium">Active: </p>
             </div>
             <div class="col-span-2">
                 <p>{{ $listing->listing_title }}</p>
                 <p>{{ $listing->listing_description }}</p>
+                <p>{{ $listing->listing_condition == "unworn" ? "Unworn" : "Worn" }}</p>
                 <p>€{{ $listing->listing_price }}</p>
                 @if ($listing->listing_approved == true)
                 <label class="relative my-auto items-center cursor-pointer">

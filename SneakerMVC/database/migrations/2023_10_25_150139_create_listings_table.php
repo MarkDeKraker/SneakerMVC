@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('listing_description');
             $table->string('listing_price');
             $table->string('listing_originalprice');
+            $table->string('listing_condition');
             $table->boolean('listing_sold')->default(false);
             $table->integer('buyer_id')->nullable();
             $table->integer("seller_id");
