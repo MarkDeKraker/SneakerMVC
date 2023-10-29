@@ -1,66 +1,98 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SneakerMVC
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Deze handleiding beschrijft de stappen om de SneakerMVC Laravel-applicatie lokaal op te starten voor ontwikkelingsdoeleinden/beoordeling. Zorg ervoor dat je alle vereisten hebt geïnstalleerd voordat je begint. Ook is er een uitleg beschikbaar van wat de applicatie kan
 
-## About Laravel
+## Functies applicatie
+### User
+- Volledige CRUD om sneakers te managen
+- Mogelijk om sneakers te verkopen op het platform
+- Mogelijk om sneaker te kopen op het platform
+- Advertenties aan/uit zetten
+- Winst bekijken per sneaker
+- Account gegevens aanpassen
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Admin
+- Mogelijkheid om advertenties te goedkeuren en afkeuren
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Algemeen
+- Filteren op advertenties
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Vereisten
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- PHP = 8.2.11
+- Composer (https://getcomposer.org/)
+- Node.js en NPM (https://nodejs.org/)
+- Een Postgresql database of het gebruik van docker
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Installatie
 
-## Laravel Sponsors
+1. **Kloon het project vanaf de Git-repository:**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+    ```bash
+    git clone <repository-url> <project-map>
+    ```
 
-### Premium Partners
+2. **Navigeer naar de projectmap:**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+    ```bash
+    cd <project-map>
+    ```
 
-## Contributing
+3. **Installeer PHP-afhankelijkheden met Composer:**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    ```bash
+    composer install
+    ```
 
-## Code of Conduct
+4. **Maak een kopie van het .env-bestand:**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    ```bash
+    cp .env.example .env
+    ```
 
-## Security Vulnerabilities
+5. **Genereer een applicatiesleutel:**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    ```bash
+    php artisan key:generate
+    ```
 
-## License
+6. **Bewerk het .env-bestand:**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    Pas de database-instellingen in het .env-bestand aan met de juiste gegevens voor jouw lokale omgeving, zoals database-naam, gebruikersnaam en wachtwoord. Ook kan je hier je docker configureren als een image gebruikt zoals aline/pgsql
+
+7. **Voer de database-migraties uit:**
+
+    ```bash
+    php artisan migrate
+    ```
+
+8. **Start de ingebouwde ontwikkelingsserver:**
+
+    ```bash
+    php artisan serve
+    ```
+
+   De applicatie is nu toegankelijk op http://localhost:8000.
+
+9. **Compileer assets (CSS en JavaScript):**
+
+    ```bash
+    npm install
+    npm run dev
+    ```
+
+   Hiermee worden assets gecompileerd en bijgewerkt.
+
+## Gebruik
+
+Je kunt nu de Laravel-applicatie openen in je webbrowser op http://localhost:8000 en beginnen met ontwikkelen. Zorg ervoor dat je ook de [Laravel-documentatie](https://laravel.com/docs) raadpleegt voor meer informatie over het werken met Laravel.
+
+## Probleemoplossing
+
+- Als je problemen ondervindt, controleer dan de webserver- en database-instellingen in het .env-bestand.
+- Zorg ervoor dat de vereiste extensies zijn ingeschakeld in je PHP-configuratie.
+- Als je aangepaste omgevingsvariabelen hebt, pas deze dan aan in het .env-bestand.
+- Zorg ervoor dat je de juiste permissies hebt ingesteld voor mappen en bestanden die door de applicatie worden gebruikt.
+
